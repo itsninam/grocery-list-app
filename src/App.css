@@ -1,5 +1,5 @@
 /* google fonts */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Noto+Serif&display=swap');
 
 .wrapper {
   text-align: center;
@@ -15,6 +15,12 @@ body {
   text-transform: capitalize;
 }
 
+p {
+  text-transform: uppercase;
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+}
+
 
 
 label {
@@ -27,13 +33,20 @@ input {
   border: none;
   border-radius: 5px;
   margin-bottom: 30px;
+  cursor: pointer;
 }
 
 .buttonContainer {
- 
   text-align: right;
-  width: 40%;
+  width: 45%;
   margin: 0 auto;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  margin: 0 5px;
+  background: none;
 }
 
 .btn {
@@ -41,6 +54,7 @@ input {
  padding: 5px 8px;
  border-radius: 5px;
 align-self: right;
+background-color: #c19bff;
 
 }
 
@@ -52,13 +66,11 @@ li {
 }
 
 
-
 .listContainer {
-  width: 40%;
+  width: 45%;
   margin: 10px auto 0 auto;
   text-align: center;
 }
-
 
 
 li {
@@ -66,7 +78,48 @@ li {
   align-items: center;
   justify-content: space-between;
   background-color: white;
-  padding: 5px;
+  padding: 10px 10px;
   margin: 3px 0;
+ 
+}
+
+img {
+  width: 70px;
+  height: 70px;
+  display: block;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+.btnContainer {
+  display: flex;
+  flex-direction: column;
+ justify-content: space-between;
+ align-items: center;
+}
+
+.rightItems {
+  display: flex;
+}
+
+.removeItem {
+  align-self: flex-end;
+  margin-bottom: 40px;
+}
+
+.updateBtns {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+padding: 5px;
+  background-color: yellow;
+}
+
+.warningMessage {
+  color: #c19bff;
+  margin: 10px;
+
 }
 
