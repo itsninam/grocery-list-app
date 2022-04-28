@@ -2,11 +2,14 @@ const Form = ({ handleSubmit, userInput, handleUserInput }) => {
   return (
     <>
       <form action="" onSubmit={handleSubmit}>
-        {/* <label htmlFor="itemName">Add item</label> */}
+        <h2>Create a grocery list for your next shopping trip!</h2>
+        <label htmlFor="itemName" className="sr-only">
+          Add grocery item
+        </label>
         <input
           id="itemName"
           type="text"
-          placeholder="Add item (e.g. apples)"
+          placeholder="Add item (e.g. apples 🍎)"
           value={userInput}
           onChange={handleUserInput}
         />

@@ -8,17 +8,17 @@ import {
   onValue,
   remove,
   increment,
+  update,
 } from "firebase/database";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 //Components
 import Form from "./components/Form";
+import GroceryItem from "./components/GroceryItem";
 
 //styling
 import "./App.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMinus, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 function App() {
   //store database information
@@ -59,6 +59,40 @@ function App() {
     setUserInput(event.target.value);
   };
 
+  //api call
+  const fetchData = () => {
+    axios({
+      url: "https://api.unsplash.com/search/photos",
+      method: "GET",
+      dataResponse: "json",
+      params: {
+        client_id: "SPWoYE3TRrK7rkvIR2uFqa0RuCJ-tfaeJvWqFzdyd-w",
+        query: userInput,
+        per_page: 1,
+      },
+    })
+      .then((response) => {
+        const apiImage = response.data.results[0].urls.small;
+
+        const database = getDatabase(firebase);
+        const dbRef = ref(database);
+
+        push(dbRef, {
+          itemName: userInput,
+          amount: count,
+          apiImage: apiImage,
+        });
+
+        setUserInput("");
+        setWarningMessage(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setWarningMessage(true);
+        setUserInput("");
+      });
+  };
+
   //push user input to database on submit and clear form
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -66,36 +100,7 @@ function App() {
     if (!userInput) {
       alert("Please enter an item!");
     } else {
-      //api call
-      axios({
-        url: "https://api.unsplash.com/search/photos",
-        method: "GET",
-        dataResponse: "json",
-        params: {
-          client_id: "SPWoYE3TRrK7rkvIR2uFqa0RuCJ-tfaeJvWqFzdyd-w",
-          query: userInput,
-          per_page: 1,
-        },
-      })
-        .then((response) => {
-          const apiImage = response.data.results[0].urls.small;
-
-          const database = getDatabase(firebase);
-          const dbRef = ref(database);
-
-          push(dbRef, {
-            itemName: userInput,
-            amount: count,
-            apiImage: apiImage,
-          });
-
-          setUserInput("");
-          setWarningMessage(false);
-        })
-        .catch((err) => {
-          setWarningMessage(true);
-          setUserInput("");
-        });
+      fetchData();
     }
   };
 
@@ -128,63 +133,56 @@ function App() {
     const database = getDatabase(firebase);
     const dbRef = ref(database, `/${key}/amount`);
 
-    setCount((count -= 1));
-    set(dbRef, count);
+    //prevent negative values
+    if (count < 1) {
+      setCount(0);
+    } else {
+      setCount((count -= 1));
+      set(dbRef, count);
+    }
   };
 
   return (
-    <div className="wrapper">
-      <h1>All out of...</h1>
-      {warningMessage ? (
-        <p className="warningMessage">Something went wrong, try again!</p>
-      ) : (
-        ""
-      )}
-      <Form
-        handleSubmit={handleSubmit}
-        userInput={userInput}
-        handleUserInput={handleUserInput}
-      />
-      <div className="buttonContainer">
-        <button onClick={handleClearList} className="btn">
-          Clear list
-        </button>
+    <>
+      <div className="wrapper">
+        <h1>All out of...</h1>
+        <Form
+          handleSubmit={handleSubmit}
+          userInput={userInput}
+          handleUserInput={handleUserInput}
+        />
+        <div className="warningMessage">
+          {warningMessage ? <p>Something went wrong, try again!</p> : ""}
+        </div>
+        <div className="buttonContainer">
+          <button onClick={handleClearList} className="btn">
+            Clear list
+          </button>
+        </div>
+        <ul className="listContainer">
+          {groceryItems.map((item) => {
+            return (
+              <GroceryItem
+                key={item.key}
+                image={item.apiImage}
+                itemName={item.itemName}
+                handleRemoveItem={() => handleRemoveItem(item.key)}
+                handleDecreaseAmount={() => handleDecreaseAmount(item.key)}
+                handleIncreaseAmount={() => handleIncreaseAmount(item.key)}
+                handleClearList={handleClearList}
+                itemAmount={item.amount}
+              />
+            );
+          })}
+        </ul>
       </div>
-      <ul className="listContainer">
-        {groceryItems.map((item) => {
-          return (
-            <li key={item.key}>
-              <div className="rightItems">
-                <div className="imgContainer">
-                  <img src={item.apiImage} alt={item.itemName} />
-                </div>
-                <p>{item.itemName}</p>
-              </div>
-              <div className="btnContainer">
-                <button
-                  className="removeItem"
-                  onClick={() => handleRemoveItem(item.key)}
-                >
-                  <FontAwesomeIcon icon={faXmark} className="icon" />
-                  <span className="sr-only">Remove item</span>
-                </button>
-                <div className="updateBtns">
-                  <button onClick={() => handleIncreaseAmount(item.key)}>
-                    <FontAwesomeIcon icon={faPlus} className="icon" />
-                    <span className="sr-only">Increase amount</span>
-                  </button>
-                  <p>{item.amount}</p>
-                  <button onClick={() => handleDecreaseAmount(item.key)}>
-                    <FontAwesomeIcon icon={faMinus} className="icon" />
-                    <span className="sr-only">Decrease amount</span>
-                  </button>
-                </div>
-              </div>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+      <footer>
+        <p>
+          Created at{" "}
+          <a href="https://junocollege.com/"> Juno College for Technology</a>
+        </p>
+      </footer>
+    </>
   );
 }
 
