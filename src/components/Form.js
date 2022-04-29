@@ -13,6 +13,9 @@ const Form = ({ handleSubmit, userInput, handleUserInput }) => {
           value={userInput}
           onChange={handleUserInput}
         />
+        <button type="submit" className="btn">
+          Add item
+        </button>
       </form>
     </>
   );

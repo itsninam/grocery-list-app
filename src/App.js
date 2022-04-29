@@ -7,7 +7,6 @@ import {
   set,
   onValue,
   remove,
-  once,
   get,
 } from "firebase/database";
 import { useEffect, useState } from "react";
@@ -29,6 +28,9 @@ function App() {
 
   //warning message
   const [warningMessage, setWarningMessage] = useState(false);
+
+  //total item count
+  const [totalItem, setTotalItems] = useState(0);
 
   // retrieve data from firebase
   useEffect(() => {
@@ -99,6 +101,7 @@ function App() {
     } else {
       fetchData();
     }
+    getTotal();
   };
 
   //clear entire list
@@ -107,6 +110,7 @@ function App() {
     const dbRef = ref(database);
     remove(dbRef);
     setGroceryItems([]);
+    setTotalItems(0);
   };
 
   // remove individual item
@@ -114,6 +118,7 @@ function App() {
     const database = getDatabase(firebase);
     const dbRef = ref(database, `/${key}`);
     remove(dbRef);
+    setTotalItems(totalItem - 1);
   };
 
   // increase amount
@@ -126,6 +131,8 @@ function App() {
       currentCount = currentCount + 1;
       set(dbRef, currentCount);
     });
+
+    setTotalItems(totalItem + 1);
   };
 
   //decrease amount
@@ -139,8 +146,16 @@ function App() {
       if (currentCount > 1) {
         currentCount = currentCount - 1;
         set(dbRef, currentCount);
+        setTotalItems(totalItem - 1);
       }
     });
+  };
+
+  const getTotal = () => {
+    let sum = groceryItems.reduce(function (prev, current) {
+      return prev + current.amount;
+    }, 1);
+    setTotalItems(sum);
   };
 
   return (
@@ -155,13 +170,15 @@ function App() {
         <div className="warningMessage">
           {warningMessage ? <p>Something went wrong, try again!</p> : ""}
         </div>
+        <p>Total items: {totalItem} </p>
         <div className="buttonContainer">
-          <button onClick={handleClearList} className="btn">
+          <button onClick={handleClearList} className="btn clearList">
             Clear list
           </button>
         </div>
         <ul className="listContainer">
           {groceryItems.map((item) => {
+            console.log(item);
             return (
               <GroceryItem
                 key={item.key}

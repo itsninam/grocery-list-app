@@ -40,24 +40,17 @@ h2 {
 }
 
 
-label {
-  margin-right: 10px;
-  display: block;
-  margin-bottom: 10px;
-  font-weight: 400;
-}
-
 input {
-  width: 35%;
+  width: 78%;
   padding: 8px;
   border: none;
   border-radius: 5px;
-  cursor: pointer;
+  margin-right: 10px;
 }
 
 .buttonContainer {
   text-align: right;
-  width: 45%;
+  /* width: 46.5%; */
   margin: 0 auto;
 }
 
@@ -69,6 +62,7 @@ button {
   text-transform: uppercase;
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
+
 }
 
 .btn {
@@ -79,29 +73,35 @@ button {
   transition: 0.3s;
   color: white;
   background-color: #c19bff;
-  box-shadow: 5px 8px 15px -5px rgba(0,0,0,0.1);
-
-
-
-
-  
-  
+  box-shadow: 8px 7px 10px -4px rgba(0,0,0,0.2);
+  margin: 0;
 }
 
-.btn:hover,
-.btn:focus {
+.btn:active {
+  box-shadow: none;
+}
+
+.clearList {
   background-color: #f72585;
+  margin: 0;
 }
 
 
 .listContainer {
-  width: 45%;
+  /* width: 46.5%; */
+
   margin: 10px auto 20px auto;
   text-align: center;
+
 }
 
 .rightItems {
   display: flex;
+}
+
+ul {
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 li {
@@ -112,6 +112,7 @@ li {
   background-color: white;
   padding: 10px 10px;
   margin: 3px 0;
+
  
 }
 
@@ -184,6 +185,36 @@ img {
   a:focus {
     color: white;
   }
+
+
+  @media (max-width: 555px){
+  .wrapper {
+   width: 95%;
+  }
+  
+  input {
+    width: 74%;
+  }
+
+    
+  }
+
+  @media (max-width: 430px){
+    h2 {
+      font-size: 0.7rem;
+    }
+
+    input {
+      width: 69%;
+    }
+  }
+
+  @media (max-width: 320px){
+input {
+  width: 64%;
+}
+  }
+
 
 
 
