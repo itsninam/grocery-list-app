@@ -7,8 +7,8 @@ import {
   set,
   onValue,
   remove,
-  increment,
-  update,
+  once,
+  get,
 } from "firebase/database";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -26,9 +26,6 @@ function App() {
 
   //store user input from the form
   const [userInput, setUserInput] = useState("");
-
-  //store item count
-  let [count, setCount] = useState(1);
 
   //warning message
   const [warningMessage, setWarningMessage] = useState(false);
@@ -79,7 +76,7 @@ function App() {
 
         push(dbRef, {
           itemName: userInput,
-          amount: count,
+          amount: 1,
           apiImage: apiImage,
         });
 
@@ -124,8 +121,11 @@ function App() {
     const database = getDatabase(firebase);
     const dbRef = ref(database, `/${key}/amount`);
 
-    setCount((count += 1));
-    set(dbRef, count);
+    get(dbRef).then((snapshot) => {
+      let currentCount = snapshot.val();
+      currentCount = currentCount + 1;
+      set(dbRef, currentCount);
+    });
   };
 
   //decrease amount
@@ -133,13 +133,14 @@ function App() {
     const database = getDatabase(firebase);
     const dbRef = ref(database, `/${key}/amount`);
 
-    //prevent negative values
-    if (count < 1) {
-      setCount(0);
-    } else {
-      setCount((count -= 1));
-      set(dbRef, count);
-    }
+    get(dbRef).then((snapshot) => {
+      let currentCount = snapshot.val();
+      //prevent negative values
+      if (currentCount > 1) {
+        currentCount = currentCount - 1;
+        set(dbRef, currentCount);
+      }
+    });
   };
 
   return (
