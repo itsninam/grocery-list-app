@@ -1,4 +1,6 @@
-const Form = ({ handleSubmit, userInput, handleUserInput }) => {
+import { useState } from "react";
+
+const Form = ({ handleSubmit, userInput, handleUserInput, warningMessage }) => {
   return (
     <>
       <form action="" onSubmit={handleSubmit}>
@@ -17,6 +19,9 @@ const Form = ({ handleSubmit, userInput, handleUserInput }) => {
           Add item
         </button>
       </form>
+      <div className="warningMessage">
+        {warningMessage ? <p>Something went wrong, try again!</p> : ""}
+      </div>
     </>
   );
 };

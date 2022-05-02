@@ -1,14 +1,6 @@
 //Modules
 import firebase from "./firebase";
-import {
-  getDatabase,
-  ref,
-  push,
-  set,
-  onValue,
-  remove,
-  get,
-} from "firebase/database";
+import { getDatabase, ref, push, onValue, remove } from "firebase/database";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -18,6 +10,7 @@ import GroceryItem from "./components/GroceryItem";
 
 //styling
 import "./App.css";
+import Footer from "./components/Footer";
 
 function App() {
   //store database information
@@ -28,9 +21,6 @@ function App() {
 
   //warning message
   const [warningMessage, setWarningMessage] = useState(false);
-
-  //total item count
-  const [totalItem, setTotalItems] = useState(0);
 
   // retrieve data from firebase
   useEffect(() => {
@@ -101,7 +91,6 @@ function App() {
     } else {
       fetchData();
     }
-    getTotal();
   };
 
   //clear entire list
@@ -110,52 +99,6 @@ function App() {
     const dbRef = ref(database);
     remove(dbRef);
     setGroceryItems([]);
-    setTotalItems(0);
-  };
-
-  // remove individual item
-  const handleRemoveItem = (key) => {
-    const database = getDatabase(firebase);
-    const dbRef = ref(database, `/${key}`);
-    remove(dbRef);
-    setTotalItems(totalItem - 1);
-  };
-
-  // increase amount
-  const handleIncreaseAmount = (key) => {
-    const database = getDatabase(firebase);
-    const dbRef = ref(database, `/${key}/amount`);
-
-    get(dbRef).then((snapshot) => {
-      let currentCount = snapshot.val();
-      currentCount = currentCount + 1;
-      set(dbRef, currentCount);
-    });
-
-    setTotalItems(totalItem + 1);
-  };
-
-  //decrease amount
-  const handleDecreaseAmount = (key) => {
-    const database = getDatabase(firebase);
-    const dbRef = ref(database, `/${key}/amount`);
-
-    get(dbRef).then((snapshot) => {
-      let currentCount = snapshot.val();
-      //prevent negative values
-      if (currentCount > 1) {
-        currentCount = currentCount - 1;
-        set(dbRef, currentCount);
-        setTotalItems(totalItem - 1);
-      }
-    });
-  };
-
-  const getTotal = () => {
-    let sum = groceryItems.reduce(function (prev, current) {
-      return prev + current.amount;
-    }, 1);
-    setTotalItems(sum);
   };
 
   return (
@@ -166,40 +109,23 @@ function App() {
           handleSubmit={handleSubmit}
           userInput={userInput}
           handleUserInput={handleUserInput}
+          warningMessage={warningMessage}
         />
-        <div className="warningMessage">
-          {warningMessage ? <p>Something went wrong, try again!</p> : ""}
-        </div>
-        <p>Total items: {totalItem} </p>
+        <p>
+          Total items: {""}
+          {groceryItems
+            .map((item) => item.amount)
+            .reduce((previous, current) => previous + current, 0)}
+        </p>
+
         <div className="buttonContainer">
           <button onClick={handleClearList} className="btn clearList">
             Clear list
           </button>
         </div>
-        <ul className="listContainer">
-          {groceryItems.map((item) => {
-            console.log(item);
-            return (
-              <GroceryItem
-                key={item.key}
-                image={item.apiImage}
-                itemName={item.itemName}
-                handleRemoveItem={() => handleRemoveItem(item.key)}
-                handleDecreaseAmount={() => handleDecreaseAmount(item.key)}
-                handleIncreaseAmount={() => handleIncreaseAmount(item.key)}
-                handleClearList={handleClearList}
-                itemAmount={item.amount}
-              />
-            );
-          })}
-        </ul>
+        <GroceryItem groceryItems={groceryItems} />
       </div>
-      <footer>
-        <p>
-          Created at{" "}
-          <a href="https://junocollege.com/"> Juno College for Technology</a>
-        </p>
-      </footer>
+      <Footer />
     </>
   );
 }
