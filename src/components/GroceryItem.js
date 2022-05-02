@@ -6,7 +6,7 @@ import { getDatabase, ref, set, remove, get } from "firebase/database";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 
-const GroceryItem = ({ groceryItems }) => {
+const GroceryItem = ({ groceryItems, handleClearList }) => {
   //decrease amount
   const handleDecreaseAmount = (key) => {
     const database = getDatabase(firebase);
@@ -42,46 +42,59 @@ const GroceryItem = ({ groceryItems }) => {
   };
 
   return (
-    <ul className="listContainer">
-      {groceryItems.map((item) => {
-        return (
-          <li key={item.key}>
-            <div className="rightItems">
-              <div className="imgContainer">
-                <img src={item.apiImage} alt={item.itemName} />
+    <div>
+      <div className="flexContainer">
+        <p>
+          Total items: {""}
+          {groceryItems
+            .map((item) => item.amount)
+            .reduce((previous, current) => previous + current, 0)}
+        </p>
+        <button onClick={handleClearList} className="btn clearList">
+          Clear list
+        </button>
+      </div>
+      <ul className="listContainer">
+        {groceryItems.map((item) => {
+          return (
+            <li key={item.key}>
+              <div className="rightItems">
+                <div className="imgContainer">
+                  <img src={item.apiImage} alt={item.itemName} />
+                </div>
+                <p className="itemName">{item.itemName}</p>
               </div>
-              <p className="itemName">{item.itemName}</p>
-            </div>
-            <div className="btnContainer">
-              <button
-                className="removeItem"
-                onClick={() => handleRemoveItem(item.key)}
-              >
-                <FontAwesomeIcon icon={faXmark} className="icon" />
-                <span className="sr-only">Remove item</span>
-              </button>
-              <div className="updateBtns">
-                <button onClick={() => handleDecreaseAmount(item.key)}>
-                  <FontAwesomeIcon
-                    icon={faMinus}
-                    className="icon changeAmount"
-                  />
-                  <span className="sr-only">Decrease amount</span>
+              <div className="btnContainer">
+                <button
+                  className="removeItem"
+                  onClick={() => handleRemoveItem(item.key)}
+                >
+                  <FontAwesomeIcon icon={faXmark} className="icon" />
+                  <span className="sr-only">Remove item</span>
                 </button>
-                <p className="itemAmount">{item.amount}</p>
-                <button onClick={() => handleIncreaseAmount(item.key)}>
-                  <FontAwesomeIcon
-                    icon={faPlus}
-                    className="icon changeAmount"
-                  />
-                  <span className="sr-only">Increase amount</span>
-                </button>
+                <div className="updateBtns">
+                  <button onClick={() => handleDecreaseAmount(item.key)}>
+                    <FontAwesomeIcon
+                      icon={faMinus}
+                      className="icon changeAmount"
+                    />
+                    <span className="sr-only">Decrease amount</span>
+                  </button>
+                  <p className="itemAmount">{item.amount}</p>
+                  <button onClick={() => handleIncreaseAmount(item.key)}>
+                    <FontAwesomeIcon
+                      icon={faPlus}
+                      className="icon changeAmount"
+                    />
+                    <span className="sr-only">Increase amount</span>
+                  </button>
+                </div>
               </div>
-            </div>
-          </li>
-        );
-      })}
-    </ul>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 };
 

@@ -7,12 +7,12 @@ import axios from "axios";
 //Components
 import Form from "./components/Form";
 import GroceryItem from "./components/GroceryItem";
+import Footer from "./components/Footer";
 
 //styling
 import "./App.css";
-import Footer from "./components/Footer";
 
-function App() {
+const App = () => {
   //store database information
   const [groceryItems, setGroceryItems] = useState([]);
 
@@ -111,23 +111,14 @@ function App() {
           handleUserInput={handleUserInput}
           warningMessage={warningMessage}
         />
-        <p>
-          Total items: {""}
-          {groceryItems
-            .map((item) => item.amount)
-            .reduce((previous, current) => previous + current, 0)}
-        </p>
-
-        <div className="buttonContainer">
-          <button onClick={handleClearList} className="btn clearList">
-            Clear list
-          </button>
-        </div>
-        <GroceryItem groceryItems={groceryItems} />
+        <GroceryItem
+          groceryItems={groceryItems}
+          handleClearList={handleClearList}
+        />
       </div>
       <Footer />
     </>
   );
-}
+};
 
 export default App;
