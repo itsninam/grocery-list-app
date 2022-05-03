@@ -107,6 +107,27 @@ input {
   justify-content: space-between;
 }
 
+span {
+  color: #fff;
+  background-color: #c19bff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.3rem;
+  height: 1.3rem;
+  margin-left: 10px;
+  font-weight: 500;
+}
+
+.totalItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+
 .clearList {
   background-color: #f72585;
   margin: 0;

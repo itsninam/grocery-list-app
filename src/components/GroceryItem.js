@@ -44,15 +44,23 @@ const GroceryItem = ({ groceryItems, handleClearList }) => {
   return (
     <div>
       <div className="flexContainer">
-        <p>
+        <p className="totalItem">
           Total items: {""}
-          {groceryItems
-            .map((item) => item.amount)
-            .reduce((previous, current) => previous + current, 0)}
+          <span>
+            {groceryItems
+              .map((item) => item.amount)
+              .reduce((previous, current) => previous + current, 0)}
+          </span>
         </p>
-        <button onClick={handleClearList} className="btn clearList">
-          Clear list
-        </button>
+        {Object.keys(groceryItems).length === 0 ? (
+          ""
+        ) : (
+          <>
+            <button onClick={handleClearList} className="btn clearList">
+              Clear list
+            </button>
+          </>
+        )}
       </div>
       <ul className="listContainer">
         {groceryItems.map((item) => {
