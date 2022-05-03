@@ -100,6 +100,28 @@ input {
   font-weight: 400;
 }
 
+form {
+  position: relative;
+}
+
+
+/* Modal Window Styling */
+.modalWindow {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 20px;
+  position: absolute;
+  width: 30%;
+  box-shadow: 3px 5px 15px 11px rgba(0, 0, 0, 0.1);
+  top: 80px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.modalBtn {
+  margin-top: 20px;
+}
+
 /* Grocery Item styling */
 .flexContainer {
   display: flex;
@@ -125,8 +147,6 @@ span {
   justify-content: space-between;
   align-items: center;
 }
-
-
 
 .clearList {
   background-color: #f72585;
@@ -228,6 +248,11 @@ a:focus {
 }
 
 /* Media Queries */
+@media(max-width: 780px){
+  .modalWindow {
+    width: 70%;
+  }
+}
 @media (max-width: 555px) {
   .wrapper {
     width: 95%;

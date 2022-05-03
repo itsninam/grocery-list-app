@@ -11,6 +11,7 @@ import Footer from "./components/Footer";
 
 //styling
 import "./App.css";
+import ModalWindow from "./components/ModalWindow";
 
 const App = () => {
   //store database information
@@ -21,6 +22,9 @@ const App = () => {
 
   //warning message
   const [warningMessage, setWarningMessage] = useState(false);
+
+  //modal window
+  const [openModal, setOpenModal] = useState(false);
 
   // retrieve data from firebase
   useEffect(() => {
@@ -87,7 +91,7 @@ const App = () => {
     event.preventDefault();
 
     if (!userInput) {
-      alert("Please enter an item!");
+      setOpenModal(true);
     } else {
       fetchData();
     }
@@ -110,6 +114,10 @@ const App = () => {
           userInput={userInput}
           handleUserInput={handleUserInput}
           warningMessage={warningMessage}
+        />
+        <ModalWindow
+          modalWindow={openModal}
+          handleModal={() => setOpenModal(false)}
         />
         <GroceryItem
           groceryItems={groceryItems}
