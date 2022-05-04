@@ -42,7 +42,7 @@ const GroceryItem = ({ groceryItems, handleClearList }) => {
   };
 
   return (
-    <div>
+    <>
       <div className="flexContainer">
         <p className="totalItem">
           Total items: {""}
@@ -77,7 +77,11 @@ const GroceryItem = ({ groceryItems, handleClearList }) => {
                   className="removeItem"
                   onClick={() => handleRemoveItem(item.key)}
                 >
-                  <FontAwesomeIcon icon={faXmark} className="icon" />
+                  <FontAwesomeIcon
+                    icon={faXmark}
+                    className="icon"
+                    aria-hidden="true"
+                  />
                   <span className="sr-only">Remove item</span>
                 </button>
                 <div className="updateBtns">
@@ -85,6 +89,7 @@ const GroceryItem = ({ groceryItems, handleClearList }) => {
                     <FontAwesomeIcon
                       icon={faMinus}
                       className="icon changeAmount"
+                      aria-hidden="true"
                     />
                     <span className="sr-only">Decrease amount</span>
                   </button>
@@ -93,6 +98,7 @@ const GroceryItem = ({ groceryItems, handleClearList }) => {
                     <FontAwesomeIcon
                       icon={faPlus}
                       className="icon changeAmount"
+                      aria-hidden="true"
                     />
                     <span className="sr-only">Increase amount</span>
                   </button>
@@ -102,7 +108,7 @@ const GroceryItem = ({ groceryItems, handleClearList }) => {
           );
         })}
       </ul>
-    </div>
+    </>
   );
 };
 

@@ -5,13 +5,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 //Components
+import Footer from "./components/Footer";
 import Form from "./components/Form";
 import GroceryItem from "./components/GroceryItem";
-import Footer from "./components/Footer";
+import ModalWindow from "./components/ModalWindow";
 
 //styling
 import "./App.css";
-import ModalWindow from "./components/ModalWindow";
 
 const App = () => {
   //store database information
@@ -23,7 +23,7 @@ const App = () => {
   //warning message
   const [warningMessage, setWarningMessage] = useState(false);
 
-  //modal window
+  //modal window to alert user if no input provided
   const [openModal, setOpenModal] = useState(false);
 
   // retrieve data from firebase
@@ -33,7 +33,6 @@ const App = () => {
 
     onValue(dbRef, (response) => {
       const dbData = response.val();
-
       const dataArray = [];
       for (let key in dbData) {
         dataArray.push({
@@ -66,7 +65,6 @@ const App = () => {
     })
       .then((response) => {
         const apiImage = response.data.results[0].urls.small;
-
         const database = getDatabase(firebase);
         const dbRef = ref(database);
 
@@ -80,7 +78,6 @@ const App = () => {
         setWarningMessage(false);
       })
       .catch((err) => {
-        console.log(err);
         setWarningMessage(true);
         setUserInput("");
       });
@@ -102,7 +99,6 @@ const App = () => {
     const database = getDatabase(firebase);
     const dbRef = ref(database);
     remove(dbRef);
-    setGroceryItems([]);
   };
 
   return (

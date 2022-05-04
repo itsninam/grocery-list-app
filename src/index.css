@@ -248,11 +248,12 @@ a:focus {
 }
 
 /* Media Queries */
-@media(max-width: 780px){
+@media (max-width: 780px){
   .modalWindow {
     width: 70%;
   }
 }
+
 @media (max-width: 555px) {
   .wrapper {
     width: 95%;

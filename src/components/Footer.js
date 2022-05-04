@@ -2,8 +2,8 @@ const Footer = () => {
   return (
     <footer>
       <p>
-        Created at{" "}
-        <a href="https://junocollege.com/"> Juno College for Technology</a>
+        Created by <a href="https://github.com/itsninam">Madalina Oancea </a> at{" "}
+        <a href="https://junocollege.com/"> Juno College </a>
       </p>
     </footer>
   );
