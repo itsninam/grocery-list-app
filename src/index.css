@@ -252,6 +252,11 @@ a:focus {
   .modalWindow {
     width: 70%;
   }
+
+  footer {
+      font-size: 0.7rem;
+  }
+  
 }
 
 @media (max-width: 555px) {
@@ -267,6 +272,7 @@ a:focus {
 @media (max-width: 430px) {
   h2 {
     font-size: 0.7rem;
+  
   }
 
   input {
@@ -277,5 +283,10 @@ a:focus {
 @media (max-width: 320px) {
   input {
     width: 64%;
+  }
+
+  .itemName {
+    font-size: 0.6rem;
+    align-self: flex-start;
   }
 }
