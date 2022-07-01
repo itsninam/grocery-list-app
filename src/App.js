@@ -12,6 +12,7 @@ import ModalWindow from "./components/ModalWindow";
 
 //styling
 import "./App.css";
+import Loading from "./components/Loading";
 
 const App = () => {
   //store database information
@@ -25,6 +26,9 @@ const App = () => {
 
   //modal window to alert user if no input provided
   const [openModal, setOpenModal] = useState(false);
+
+  //loading state
+  const [loading, setLoading] = useState(true);
 
   // retrieve data from firebase
   useEffect(() => {
@@ -43,6 +47,7 @@ const App = () => {
         });
       }
       setGroceryItems(dataArray);
+      setLoading(false);
     });
   }, []);
 
@@ -115,10 +120,15 @@ const App = () => {
           modalWindow={openModal}
           handleModal={() => setOpenModal(false)}
         />
-        <GroceryItem
-          groceryItems={groceryItems}
-          handleClearList={handleClearList}
-        />
+        {/* Display loading component if items not loaded on page yet */}
+        {loading ? (
+          <Loading />
+        ) : (
+          <GroceryItem
+            groceryItems={groceryItems}
+            handleClearList={handleClearList}
+          />
+        )}
       </div>
       <Footer />
     </>

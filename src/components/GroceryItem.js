@@ -52,6 +52,7 @@ const GroceryItem = ({ groceryItems, handleClearList }) => {
               .reduce((previous, current) => previous + current, 0)}
           </span>
         </p>
+        {/* Only display clear list button if items are displayed on page */}
         {Object.keys(groceryItems).length === 0 ? (
           ""
         ) : (
@@ -62,6 +63,7 @@ const GroceryItem = ({ groceryItems, handleClearList }) => {
           </>
         )}
       </div>
+
       <ul className="listContainer">
         {groceryItems.map((item) => {
           return (
